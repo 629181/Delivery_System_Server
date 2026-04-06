@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+</head>
+
+<body>
+
+    <header>🚚 Admin Dashboard</header>
+
+    <div class="container" style="display:flex; gap:15px;">
+
+        <div class="card" style="width:30%;">
+            <h3>Riders</h3>
+            <ul id="riderList"></ul>
+        </div>
+
+        <div style="width:70%;">
+            <div id="map" style="height:400px;"></div>
+            <div class="card">
+                <h3>Activity</h3>
+                <ul id="activity"></ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

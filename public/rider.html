@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider App | Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">📦 Rider Dispatch</div>
+    </header>
+
+    <div class="container" style="max-width: 500px; margin: 40px auto;">
+        <div class="card" id="registrationCard">
+            <h2 style="margin-top: 0; font-weight: 700;">Rider Registration</h2>
+            <p style="color: #64748b; margin-bottom: 24px;">Enter your details to start your shift and enable live
+                tracking.</p>
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <input id="name" type="text" placeholder="John Doe">
+            </div>
+
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input id="phone" type="tel" placeholder="+91 98765 43210">
+            </div>
+
+            <div class="input-group">
+                <label>Vehicle Type</label>
+                <input id="vehicle" type="text" placeholder="Bike / Scooter / Van">
+            </div>
+
+            <button onclick="register()" id="regBtn">
+                <span>Start Shift</span>
+            </button>
+
+            <div id="statusContainer" style="display: none; margin-top: 25px; text-align: center;">
+                <div class="pulse-icon"></div>
+                <p id="statusText" style="font-weight: 600; color: #059669;"></p>
+                <small style="color: #64748b;">Keep this window open to stay online</small>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/rider.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
