@@ -28,6 +28,7 @@ app.post("/api/register", async (req, res) => {
 });
 
 /* Update Location */
+/* Update Location - MODIFIED */
 app.post("/api/update-location", async (req, res) => {
     const { riderId, lat, lng } = req.body;
 
@@ -35,46 +36,39 @@ app.post("/api/update-location", async (req, res) => {
         riderId,
         {
             location: { lat, lng },
-            status: "active",
+            // REMOVED status: "active" to prevent overwriting delivery status
             lastUpdate: new Date()
         },
         { new: true }
     );
 
-    await new Activity({
-        riderId,
-        message: "Location updated"
-    }).save();
-
+    // We don't save "Location updated" to Activity logs anymore to avoid clutter,
+    // since the Rider object itself stores the latest location.
+    
     io.emit("locationUpdated", rider);
     res.json({ success: true });
 });
-/* Update Delivery Status */
+
+/* Update Delivery Status - NEW */
 app.post("/api/update-status", async (req, res) => {
     const { riderId, status } = req.body;
 
-    try {
-        const rider = await Rider.findByIdAndUpdate(
-            riderId,
-            { status: status },
-            { new: true }
-        );
+    const rider = await Rider.findByIdAndUpdate(
+        riderId,
+        { status: status },
+        { new: true }
+    );
 
-        // Log the status change in Activity collection
-        await new Activity({
-            riderId,
-            message: `Status updated: ${status}`,
-            time: new Date()
-        }).save();
+    // Only save Status changes to Activity logs
+    await new Activity({
+        riderId,
+        message: `Status: ${status}`
+    }).save();
 
-        // Broadcast the update to the Admin App
-        io.emit("statusUpdated", rider);
-        
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    io.emit("statusUpdated", rider);
+    res.json({ success: true });
 });
+
 /* Get All Riders */
 app.get("/api/riders", async (req, res) => {
     const riders = await Rider.find();
