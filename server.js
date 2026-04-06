@@ -49,7 +49,32 @@ app.post("/api/update-location", async (req, res) => {
     io.emit("locationUpdated", rider);
     res.json({ success: true });
 });
+/* Update Delivery Status */
+app.post("/api/update-status", async (req, res) => {
+    const { riderId, status } = req.body;
 
+    try {
+        const rider = await Rider.findByIdAndUpdate(
+            riderId,
+            { status: status },
+            { new: true }
+        );
+
+        // Log the status change in Activity collection
+        await new Activity({
+            riderId,
+            message: `Status updated: ${status}`,
+            time: new Date()
+        }).save();
+
+        // Broadcast the update to the Admin App
+        io.emit("statusUpdated", rider);
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 /* Get All Riders */
 app.get("/api/riders", async (req, res) => {
     const riders = await Rider.find();
